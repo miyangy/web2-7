@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<link rel = "stylesheet" href = "style.css" />
+	<script src = "animate.js"></script>
+</head>
+<body>
+	<div class="top" id="top">
+    	<img src="a15.png">
+      	<p>[温馨提示]最近有不少非法分子在网上骗人，请大家注意!!!</p>
+		<div class = "box" id = "box">
+			<div class = "slider" id = "slider">
+				<div class = "slide"><img src = "b5.png" alt = " "></div>
+				<div class = "slide"><img src = "b1.png" alt = " "></div>
+				<div class = "slide"><img src = "b2.png" alt = " "></div>
+				<div class = "slide"><img src = "b3.png" alt = " "></div>
+				<div class = "slide"><img src = "b4.png" alt = " "></div>
+				<div class = "slide"><img src = "b5.png" alt = " "></div>
+				<div class = "slide"><img src = "b1.png" alt = " "></div>
+			</div>
+			<span id = "left"> < </span>
+			<span id = "right"> > </span>
+			<ul class = "nav" id = "nav">
+				<li class = "active">1</li>
+				<li>2</li>
+				<li>3</li>
+				<li>4</li>
+				<li>5</li>
+			</ul>
+		</div>
+	</div>
+	<script>
+		var box = document.getElementById("box");
+		var list = document.getElementById("nav").children;
+		var slider = document.getElementById("slider");
+		var left = document.getElementById("left");
+		var right = document.getElementById("right");
+		var index = 1;
+		var timer;
+		var isMoving = false;
+		function next(){
+			if(isMoving){
+				return;
+			}
+			isMoving = true;
+			index++;
+			navMove();
+			animate(slider,{left:-1200*index},function(){
+				if(index === 6){
+					slider.style.left = "-1200px";
+					index = 1;
+				}
+				isMoving = false;
+			});
+		}
+
+		function prev(){
+			if(isMoving){
+				return;
+			}
+			isMoving = true;
+			index--;
+			navMove();
+			animate(slider,{left:-1200*index},function(){
+				if(index === 0){
+					slider.style.left = "-6000px";
+					index = 5;
+				}
+				isMoving = false;
+			});
+		}
+
+		right.onclick = next;
+		left.onclick = prev;
+
+		for(var i = 0;i < list.length;i++){
+			list[i].index = i;
+			list[i].onclick = function(){
+				index = this.index + 1;
+				navMove();
+				animate(slider,{left:-1200*index});
+			}
+		}
+		
+		function navMove(){
+			for(var i = 0;i<list.length;i++){
+				list[i].className = "";
+			}
+			if(index > 5){
+				list[0].className = "active";
+			}else if(index <= 0){
+				list[4].className = "active";
+			}else{
+				list[index-1].className = "active";
+			}
+		}
+		
+		timer = setInterval(next,3000);
+		box.onmouseover = function(){
+			animate(left,{opacity:50})
+			animate(right,{opacity:50})
+			clearInterval(timer);
+		}
+		box.onmouseout = function(){
+			animate(left,{opacity:0})
+			animate(right,{opacity:0})
+			timer = setInterval(next, 3000);
+		}
+	</script>
+</body>
+</html>
